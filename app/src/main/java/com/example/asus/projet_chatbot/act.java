@@ -3,21 +3,18 @@ package com.example.asus.projet_chatbot;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
+
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
+
 
 import com.example.asus.projet_chatbot.chatbot.ChatMessage;
 import com.example.asus.projet_chatbot.chatbot.ChatMessageAdapter;
-import com.github.kittinunf.fuel.Fuel;
-import com.github.kittinunf.fuel.core.FuelError;
-import com.github.kittinunf.fuel.core.Handler;
-import com.github.kittinunf.fuel.core.Request;
+import com.example.asus.projet_chatbot.chatbot.workspace;
 import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
@@ -26,7 +23,7 @@ import com.ibm.watson.developer_cloud.http.ServiceCallback;
 import java.util.ArrayList;
 
 public class act extends AppCompatActivity {
-
+workspace w = new workspace();
     private ListView mListView;
     private FloatingActionButton mButtonSend;
     private EditText sendmessage;
@@ -34,8 +31,8 @@ public class act extends AppCompatActivity {
     private ChatMessageAdapter mAdapter;
     final ConversationService myConversationService =
             new ConversationService(
-                    "2018-07-03", getString(R.string.username),
-                    getString(R.string.password)
+                    "2018-07-08",w.getUsername(),
+w.getPassword()
 
             );
     @Override
@@ -73,13 +70,14 @@ public class act extends AppCompatActivity {
                 .build();
 
 
+
         myConversationService
-                .message(getString(R.string.workspace), request)
+                .message(w.getIdWorkspace(), request)
                 .enqueue(new ServiceCallback<MessageResponse>() {
                     @Override
                     public void onResponse(final MessageResponse response) {
 
-                        Log.d("MESSAGE WATSON RESOINSE", response.getInputText());
+                        Log.d("MESSAGE WATSON RESONSE", response.getInputText());
                         final String outputText = response.getText().get(0);
                         runOnUiThread(new Runnable() {
                             @Override
@@ -115,7 +113,6 @@ public class act extends AppCompatActivity {
 
 
         }
-
 
 
 
