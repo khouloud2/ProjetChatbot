@@ -57,6 +57,7 @@ w.getPassword()
                 Log.d("input",message);
 
                 sendMessage(message);
+                mimicOtherMessage(message);
                 sendmessage.setText("");
                 mListView.setSelection(mAdapter.getCount() - 1);
             }
