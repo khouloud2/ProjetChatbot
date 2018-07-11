@@ -23,18 +23,13 @@ import com.ibm.watson.developer_cloud.http.ServiceCallback;
 import java.util.ArrayList;
 
 public class act extends AppCompatActivity {
-workspace w = new workspace();
     private ListView mListView;
     private FloatingActionButton mButtonSend;
     private EditText sendmessage;
     private ImageView mImageView;
     private ChatMessageAdapter mAdapter;
-    final ConversationService myConversationService =
-            new ConversationService(
-                    "2018-07-08",w.getUsername(),
-w.getPassword()
+    ConversationService myConversationService ;
 
-            );
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +52,11 @@ w.getPassword()
                 Log.d("input",message);
 
                 sendMessage(message);
-                mimicOtherMessage(message);
                 sendmessage.setText("");
                 mListView.setSelection(mAdapter.getCount() - 1);
             }
         });
+        initView();
     }
     private void sendMessage(final String message) {
         ChatMessage chatMessage = new ChatMessage(message, true, false);
@@ -73,13 +68,14 @@ w.getPassword()
 
 
         myConversationService
-                .message(w.getIdWorkspace(), request)
+                .message(getString ( R.string.worksapce_watson_id ), request)
                 .enqueue(new ServiceCallback<MessageResponse>() {
                     @Override
                     public void onResponse(final MessageResponse response) {
 
                         Log.d("MESSAGE WATSON RESONSE", response.getInputText());
                         final String outputText = response.getText().get(0);
+                        mimicOtherMessage(outputText);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -115,8 +111,12 @@ w.getPassword()
 
         }
 
-
-
+        private void initView(){
+            myConversationService =   new ConversationService(
+                    "2018-07-10",getResources ().getString (R.string.workspace_watson_username),
+                    getString ( R.string.workspace_watson_password )
+            );
+        }
 
 
 

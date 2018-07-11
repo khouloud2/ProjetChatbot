@@ -104,7 +104,7 @@ visiteur=(TextView)findViewById(R.id.link);
             try {
 
                 // Enter URL address where your php file resides
-                url = new URL ( "http://192.168.190.2/myfiles/try.php" );
+                url = new URL ( "http://10.0.3.2 /myfiles/try.php" );
 
             } catch (MalformedURLException e) {
 
@@ -164,7 +164,7 @@ visiteur=(TextView)findViewById(R.id.link);
                     return(result.toString());
 
                 }else{
-
+Log.d("ereur","unsuccssful" );
                     return("unsuccessful");
                 }
 
@@ -197,7 +197,7 @@ visiteur=(TextView)findViewById(R.id.link);
                 Toast.makeText(MainActivity2.this, "Invalid email or password", Toast.LENGTH_LONG).show();
 
             } else if (result.equalsIgnoreCase("exception") || result.equalsIgnoreCase("unsuccessful")) {
-
+Log.d("exception","connection probleme");
                 Toast.makeText(MainActivity2.this, "OOPs! Something went wrong. Connection Problem.", Toast.LENGTH_LONG).show();
 
             }
