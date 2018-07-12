@@ -26,4 +26,5 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     </me.himanshusoni.chatmessageview.ChatMessageView>
 
+
 </android.support.constraint.ConstraintLayout>

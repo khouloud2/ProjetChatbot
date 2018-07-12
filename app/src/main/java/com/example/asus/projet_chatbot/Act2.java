@@ -1,21 +1,16 @@
 package com.example.asus.projet_chatbot;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-
 import com.example.asus.projet_chatbot.chatbot.ChatMessage;
 import com.example.asus.projet_chatbot.chatbot.ChatMessageAdapter;
-import com.example.asus.projet_chatbot.chatbot.workspace;
 import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
@@ -23,21 +18,22 @@ import com.ibm.watson.developer_cloud.http.ServiceCallback;
 
 import java.util.ArrayList;
 
-public class act extends AppCompatActivity implements View.OnClickListener {
+public class Act2 extends AppCompatActivity implements View.OnClickListener {
+    ConversationService myConversationService;
     private ListView mListView;
     private EditText sendmessage;
     private ImageView mImageView, mButtonSend;
     private ChatMessageAdapter mAdapter;
-    ConversationService myConversationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
-        setContentView ( R.layout.activity_act );
+        setContentView ( R.layout.activity_act2 );
         declaration ();
         initView ();
         mButtonSend.setOnClickListener ( this );
         mImageView.setOnClickListener ( this );
+
     }
 
     private void sendMessage(final String message) {
@@ -49,7 +45,7 @@ public class act extends AppCompatActivity implements View.OnClickListener {
 
 
         myConversationService
-                .message ( getString ( R.string.worksapce_watson_id ), request )
+                .message ( getString ( R.string.workspaceAN ), request )
                 .enqueue ( new ServiceCallback<MessageResponse> () {
                     @Override
                     public void onResponse(final MessageResponse response) {
@@ -114,7 +110,6 @@ public class act extends AppCompatActivity implements View.OnClickListener {
         mListView.setAdapter ( mAdapter );
     }
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId ()) {
@@ -132,11 +127,12 @@ public class act extends AppCompatActivity implements View.OnClickListener {
 
             case R.id.iv_image:
                 // do your code
-                Intent intent = new Intent ( act.this, Act2.class );
+                Intent intent = new Intent ( Act2.this, act.class );
                 startActivity ( intent );
-                act.this.finish ();
+                Act2.this.finish ();
                 break;
 
         }
     }
 }
+

@@ -10,22 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.asus.projet_chatbot.chatbot.workspace;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,141 +25,127 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity2 extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity implements View.OnClickListener{
     String url = "http://192.168.190.2/myfiles/try.php";
-ImageView fr ,an;
+
     Button btn;
     EditText temail, tpassword;
     String password, email;
-TextView visiteur;
-    public static final int CONNECTION_TIMEOUT=10000;
-    public static final int READ_TIMEOUT=15000;
+    TextView visiteur;
+    public static final int CONNECTION_TIMEOUT = 10000;
+    public static final int READ_TIMEOUT = 15000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
-        fr = (ImageView)findViewById ( R.id.imageView ) ;
-        an = (ImageView)findViewById ( R.id.imageView2 ) ;
-        temail = (EditText) findViewById(R.id.email);
-        tpassword = (EditText) findViewById(R.id.password);
-        email = temail.getText().toString();
-        password = tpassword.getText().toString();
-
-visiteur=(TextView)findViewById(R.id.link);
-        btn = (Button) findViewById(R.id.ConnectChatbot);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AsyncLogin().execute(email,password);
-
-            }
-        });
-        visiteur.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity2.this, act.class);
-
-                startActivity(intent);
-
-            }
-        });
+        super.onCreate ( savedInstanceState );
+        setContentView ( R.layout.activity_main2 );
+        init();
+        btn.setOnClickListener(this);
+        visiteur.setOnClickListener(this);
     }
 
-    private class AsyncLogin extends AsyncTask<String, String, String>
-    {
-        ProgressDialog pdLoading = new ProgressDialog(MainActivity2.this);
-    HttpURLConnection conn;
-       URL url = null;
+    @Override
+    public void onClick(View view) {
+        switch (view.getId ()) {
+
+            case R.id.ConnectChatbot:
+                final String email = temail.getText ().toString ();
+                final String password = tpassword.getText ().toString ();
+                new AsyncLogin ().execute ( email, password );
+                break;
+            case R.id.link2:
+                Intent intent = new Intent ( MainActivity2.this, act.class );
+                startActivity ( intent );
+                break ;
+        }
+
+
+
+
+    }
+
+    private class AsyncLogin extends AsyncTask<String, String, String> {
+        ProgressDialog pdLoading = new ProgressDialog ( MainActivity2.this );
+        HttpURLConnection conn;
+        URL url = null;
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            super.onPreExecute ();
 
-            //this method will be running on UI thread
-            pdLoading.setMessage("\tLoading...");
-            pdLoading.setCancelable(false);
-            pdLoading.show();
+
+            pdLoading.setMessage ( "\tLoading..." );
+            pdLoading.setCancelable ( false );
+            pdLoading.show ();
 
         }
+
         @Override
         protected String doInBackground(String... params) {
             try {
-
-                // Enter URL address where your php file resides
-                url = new URL ( "http://10.0.3.2 /myfiles/try.php" );
+                url = new URL ( "http://192.168.190.2/myfiles/try.php" );
 
             } catch (MalformedURLException e) {
 
-                e.printStackTrace();
+                e.printStackTrace ();
                 return "exception";
             }
             try {
-                conn = (HttpURLConnection)url.openConnection();
-                conn.setReadTimeout(READ_TIMEOUT);
-                conn.setConnectTimeout(CONNECTION_TIMEOUT);
-                conn.setRequestMethod("POST");
+                conn = (HttpURLConnection) url.openConnection ();
+                conn.setReadTimeout ( READ_TIMEOUT );
+                conn.setConnectTimeout ( CONNECTION_TIMEOUT );
+                conn.setRequestMethod ( "POST" );
+                conn.setDoInput ( true );
+                conn.setDoOutput ( true );
+                Uri.Builder builder = new Uri.Builder ()
+                        .appendQueryParameter ( "email", params[0] )
+                        .appendQueryParameter ( "password", params[1] );
+                String query = builder.build ().getEncodedQuery ();
 
-                // setDoInput and setDoOutput method depict handling of both send and receive
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                // Append parameters to URL
-                Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("email", params[0])
-                        .appendQueryParameter("password", params[1]);
-                String query = builder.build().getEncodedQuery();
-
-                // Open connection for sending data
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-                os.close();
-                conn.connect();
-
+                OutputStream os = conn.getOutputStream ();
+                BufferedWriter writer = new BufferedWriter (
+                        new OutputStreamWriter ( os, "UTF-8" ) );
+                writer.write ( query );
+                writer.flush ();
+                writer.close ();
+                os.close ();
+                conn.connect ();
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                e1.printStackTrace ();
                 return "exception";
             }
 
             try {
 
-                int response_code = conn.getResponseCode();
+                int response_code = conn.getResponseCode ();
 
-                // Check if successful connection made
+
                 if (response_code == HttpURLConnection.HTTP_OK) {
 
-                    // Read data sent from server
-                    InputStream input = conn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                    StringBuilder result = new StringBuilder();
+
+                    InputStream input = conn.getInputStream ();
+                    BufferedReader reader = new BufferedReader ( new InputStreamReader ( input ) );
+                    StringBuilder result = new StringBuilder ();
                     String line;
 
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
+                    while ((line = reader.readLine ()) != null) {
+                        result.append ( line );
                     }
 
                     // Pass data to onPostExecute method
-                    return(result.toString());
+                    return (result.toString ());
 
-                }else{
-Log.d("ereur","unsuccssful" );
-                    return("unsuccessful");
+                } else {
+                    return ("unsuccessful");
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                e.printStackTrace ();
                 return "exception";
             } finally {
-                conn.disconnect();
+                conn.disconnect ();
             }
 
 
@@ -180,28 +153,30 @@ Log.d("ereur","unsuccssful" );
 
         @Override
         protected void onPostExecute(String result) {
+            Log.d ( "result", result );
+            try {
+                JSONObject jsonResult = new JSONObject ( result );
+                if (!jsonResult.getBoolean (
+                        "response" )) {
+                    Toast.makeText ( MainActivity2.this, "Invalid email or password", Toast.LENGTH_LONG ).show ();
+                } else {
+                    Intent intent = new Intent ( MainActivity2.this, act.class );
+                    startActivity ( intent );
+                    MainActivity2.this.finish ();
+                }
 
-
-            pdLoading.dismiss();
-
-            if(result.equalsIgnoreCase("true"))
-            {
-
-
-                Intent intent = new Intent(MainActivity2.this,act.class);
-                startActivity(intent);
-                MainActivity2.this.finish();
-
-            }else if (result.equalsIgnoreCase("false")){
-
-                Toast.makeText(MainActivity2.this, "Invalid email or password", Toast.LENGTH_LONG).show();
-
-            } else if (result.equalsIgnoreCase("exception") || result.equalsIgnoreCase("unsuccessful")) {
-Log.d("exception","connection probleme");
-                Toast.makeText(MainActivity2.this, "OOPs! Something went wrong. Connection Problem.", Toast.LENGTH_LONG).show();
-
+            } catch (JSONException e) {
+                e.printStackTrace ();
             }
+            pdLoading.dismiss ();
+
         }
 
+    }
+    private void init(){
+        temail = (EditText) findViewById ( R.id.email );
+        tpassword = (EditText) findViewById ( R.id.password );
+        visiteur = (TextView) findViewById ( R.id.link2 );
+        btn = (Button) findViewById ( R.id.ConnectChatbot );
     }
 }

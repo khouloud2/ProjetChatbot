@@ -8,61 +8,61 @@
 
     <ListView
         android:id="@+id/boite"
-        android:layout_width="370dp"
-        android:layout_height="0dp"
+        android:layout_width="353dp"
+        android:layout_height="420dp"
         android:layout_above="@+id/send_message_layout"
-        android:layout_marginBottom="90dp"
+        android:layout_marginBottom="88dp"
         android:divider="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/logo"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
 
     <LinearLayout
         android:id="@+id/send_message_layout"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="24dp"
         android:background="#ffdddddd"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/boite">
+        app:layout_constraintTop_toBottomOf="@+id/boite"
+        app:layout_constraintVertical_bias="0.47">
 
         <ImageView
             android:id="@+id/iv_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:paddingRight="1dp"
-            android:paddingTop="1dp"
-            android:src="@drawable/speakanglais"
-            tools:clickable="true"
-            tools:paddingLeft="1dp" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="2dp"
+            android:paddingBottom="0dp"
+            android:paddingLeft="0dp"
+            android:src="@drawable/parlefrancais"
+            tools:clickable="true" />
 
         <EditText
             android:id="@+id/et_message"
-            android:layout_width="193dp"
+            android:layout_width="127dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:layout_weight="1"
-            android:hint="ecrire votre message" />
+            android:hint="write your message" />
 
         <ImageView
             android:id="@+id/send"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:padding="1dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="0dp"
-            android:paddingRight="10dp"
-            android:paddingTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
             android:src="@drawable/send"
             tools:layout_width="80dp" />
 
 
     </LinearLayout>
-
 
 </android.support.constraint.ConstraintLayout>
